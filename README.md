@@ -24,3 +24,4 @@ Các màn hình có thể mở nhanh bằng query:
 - `index.html?screen=add`
 - `index.html?screen=analytics`
 - `index.html?screen=settings`
+# MyMoney
