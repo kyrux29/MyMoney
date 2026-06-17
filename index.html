@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Tuduy Finance UI Demo</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css?v=20260618-fix1" />
   </head>
   <body>
     <main class="demo-stage" aria-label="Demo giao diện ứng dụng tài chính cá nhân">
@@ -374,96 +374,213 @@
           <section class="screen" data-screen="add" aria-labelledby="add-title">
             <header class="app-header">
               <div>
-                <p class="eyebrow">Thêm mục mới</p>
-                <h1 id="add-title">Ghi nhận dòng tiền</h1>
+                <p class="eyebrow">Quét hóa đơn</p>
+                <h1 id="add-title">Ghi nhận chi tiêu</h1>
               </div>
-              <button class="icon-button" type="button" aria-label="Tùy chọn thêm">
+              <button class="icon-button" type="button" aria-label="Mở camera">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M12 5v14M5 12h14" />
+                  <path d="M14.5 4h-5L8 7H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3Z" />
+                  <circle cx="12" cy="13" r="3" />
                 </svg>
               </button>
             </header>
 
-            <div class="segmented" role="tablist" aria-label="Loại giao dịch">
-              <button class="is-selected" type="button">Chi</button>
-              <button type="button">Thu</button>
-              <button type="button">Chuyển</button>
+            <div class="capture-tabs" role="tablist" aria-label="Cách ghi nhận giao dịch">
+              <button class="is-selected" type="button" data-capture-tab="scan">Quét HĐ</button>
+              <button type="button" data-capture-tab="manual">Nhập nhanh</button>
+              <button type="button" data-capture-tab="recurring">Định kỳ</button>
             </div>
 
-            <section class="amount-entry" aria-label="Nhập số tiền">
-              <span id="amount-label">Số tiền</span>
-              <strong id="amount-display">0 VND</strong>
-              <div class="amount-line"></div>
+            <section class="capture-panel is-active" data-capture-panel="scan">
+              <article class="scanner-card">
+                <div class="scanner-topline">
+                  <span>Camera</span>
+                  <b id="scan-status">Sẵn sàng</b>
+                </div>
+                <div class="scan-frame" aria-label="Khung quét hóa đơn">
+                  <span class="scan-corner top-left"></span>
+                  <span class="scan-corner top-right"></span>
+                  <span class="scan-corner bottom-left"></span>
+                  <span class="scan-corner bottom-right"></span>
+                  <div class="scan-beam" aria-hidden="true"></div>
+                  <article class="receipt-preview">
+                    <span>CO.OP FOOD</span>
+                    <strong>Hóa đơn bán hàng</strong>
+                    <i>17/06/2026 12:42</i>
+                    <div><b>Gạo ST25</b><em>128.000</em></div>
+                    <div><b>Sữa tươi</b><em>84.000</em></div>
+                    <div><b>Rau củ</b><em>53.000</em></div>
+                    <hr />
+                    <div><b>Tổng cộng</b><em>287.000</em></div>
+                  </article>
+                </div>
+                <div class="scan-actions">
+                  <label class="scan-button secondary">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                      <path d="M17 8 12 3 7 8" />
+                      <path d="M12 3v12" />
+                    </svg>
+                    Tải ảnh
+                    <input id="receipt-upload" class="visually-hidden" type="file" accept="image/*" capture="environment" />
+                  </label>
+                  <button class="scan-button primary" type="button" data-scan-action>
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2Z" />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                    Chụp & đọc
+                  </button>
+                </div>
+              </article>
+
+              <section class="ocr-card">
+                <div class="section-title">
+                  <h2>Kết quả nhận diện</h2>
+                  <span id="ocr-confidence">94% tin cậy</span>
+                </div>
+                <div class="ocr-grid">
+                  <div><span>Nhà cung cấp</span><strong>Co.op Food Nguyễn Trãi</strong></div>
+                  <div><span>Tổng tiền</span><strong>287.000 VND</strong></div>
+                  <div><span>VAT</span><strong>21.273 VND</strong></div>
+                  <div><span>Danh mục</span><strong>Ăn uống</strong></div>
+                </div>
+                <div class="receipt-lines" aria-label="Dòng hàng đã nhận diện">
+                  <div><span>Gạo ST25 5kg</span><b>128.000</b></div>
+                  <div><span>Sữa tươi không đường</span><b>84.000</b></div>
+                  <div><span>Rau củ & gia vị</span><b>53.000</b></div>
+                  <div><span>VAT 8%</span><b>21.273</b></div>
+                </div>
+                <div class="field-row">
+                  <label>
+                    Tài khoản
+                    <select>
+                      <option>Bank A - Debit</option>
+                      <option>MoMo - Ví điện tử</option>
+                      <option>Quỹ chung gia đình</option>
+                    </select>
+                  </label>
+                  <label>
+                    Ghi chú
+                    <input type="text" value="Bữa trưa & thực phẩm" />
+                  </label>
+                </div>
+                <div class="tax-check">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M9 12l2 2 4-4" />
+                    <circle cx="12" cy="12" r="9" />
+                  </svg>
+                  <span>Đủ dữ liệu cho báo cáo thuế và đối soát cuối tháng</span>
+                </div>
+                <button type="button" class="wide-action save-receipt">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="m5 12 5 5L20 7" />
+                  </svg>
+                  Lưu giao dịch từ hóa đơn
+                </button>
+              </section>
             </section>
 
-            <section class="category-row" aria-label="Danh mục nhanh">
-              <button type="button" class="category-chip is-active">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M4 10h16M7 10V7a5 5 0 0 1 10 0v3M6 10l1 10h10l1-10" />
-                </svg>
-                Ăn uống
-              </button>
-              <button type="button" class="category-chip">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M3 11 12 3l9 8" />
-                  <path d="M5 10v10h14V10" />
-                  <path d="M9 20v-6h6v6" />
-                </svg>
-                Nhà
-              </button>
-              <button type="button" class="category-chip">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M7 8h10M7 12h10M7 16h6" />
-                  <path d="M5 3h14v18l-3-2-3 2-3-2-3 2-2-1.3Z" />
-                </svg>
-                Hóa đơn
-              </button>
-            </section>
-
-            <div class="keypad" aria-label="Bàn phím nhập số">
-              <button type="button" data-key="1">1</button>
-              <button type="button" data-key="2">2</button>
-              <button type="button" data-key="3">3</button>
-              <button type="button" data-key="4">4</button>
-              <button type="button" data-key="5">5</button>
-              <button type="button" data-key="6">6</button>
-              <button type="button" data-key="7">7</button>
-              <button type="button" data-key="8">8</button>
-              <button type="button" data-key="9">9</button>
-              <button type="button" data-key="back" aria-label="Xóa số">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M21 4H8L2 12l6 8h13Z" />
-                  <path d="m18 9-6 6M12 9l6 6" />
-                </svg>
-              </button>
-              <button type="button" data-key="0">0</button>
-              <button type="button" data-key="done" class="confirm-key" aria-label="Lưu giao dịch">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="m5 12 5 5L20 7" />
-                </svg>
-              </button>
-            </div>
-
-            <section class="task-list">
-              <div class="section-title">
-                <h2>Hành động khác</h2>
-                <span>Dịch vụ mới</span>
+            <section class="capture-panel" data-capture-panel="manual">
+              <div class="segmented transaction-type" role="tablist" aria-label="Loại giao dịch">
+                <button class="is-selected" type="button">Chi</button>
+                <button type="button">Thu</button>
+                <button type="button">Chuyển</button>
               </div>
-              <button type="button">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M12 5v14M5 12h14" />
-                </svg>
-                Thêm thẻ ngân hàng mới
-                <span>›</span>
-              </button>
-              <button type="button">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M4 4h16v16H4z" />
-                  <path d="M8 8h8M8 12h8M8 16h5" />
-                </svg>
-                Thêm hóa đơn định kỳ
-                <span>›</span>
-              </button>
+              <section class="amount-entry" aria-label="Nhập số tiền">
+                <span id="amount-label">Số tiền</span>
+                <strong id="amount-display">0 VND</strong>
+                <div class="amount-line"></div>
+              </section>
+              <section class="category-row" aria-label="Danh mục nhanh">
+                <button type="button" class="category-chip is-active">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M4 10h16M7 10V7a5 5 0 0 1 10 0v3M6 10l1 10h10l1-10" />
+                  </svg>
+                  Ăn uống
+                </button>
+                <button type="button" class="category-chip">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M3 11 12 3l9 8" />
+                    <path d="M5 10v10h14V10" />
+                    <path d="M9 20v-6h6v6" />
+                  </svg>
+                  Nhà
+                </button>
+                <button type="button" class="category-chip">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M7 8h10M7 12h10M7 16h6" />
+                    <path d="M5 3h14v18l-3-2-3 2-3-2-3 2-2-1.3Z" />
+                  </svg>
+                  Hóa đơn
+                </button>
+              </section>
+              <div class="keypad" aria-label="Bàn phím nhập số">
+                <button type="button" data-key="1">1</button>
+                <button type="button" data-key="2">2</button>
+                <button type="button" data-key="3">3</button>
+                <button type="button" data-key="4">4</button>
+                <button type="button" data-key="5">5</button>
+                <button type="button" data-key="6">6</button>
+                <button type="button" data-key="7">7</button>
+                <button type="button" data-key="8">8</button>
+                <button type="button" data-key="9">9</button>
+                <button type="button" data-key="back" aria-label="Xóa số">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M21 4H8L2 12l6 8h13Z" />
+                    <path d="m18 9-6 6M12 9l6 6" />
+                  </svg>
+                </button>
+                <button type="button" data-key="0">0</button>
+                <button type="button" data-key="done" class="confirm-key" aria-label="Lưu giao dịch">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="m5 12 5 5L20 7" />
+                  </svg>
+                </button>
+              </div>
+            </section>
+
+            <section class="capture-panel recurring-panel" data-capture-panel="recurring">
+              <div class="section-title">
+                <h2>Giao dịch định kỳ</h2>
+                <span>3 lịch</span>
+              </div>
+              <article class="schedule-card">
+                <span class="tx-icon tx-blue">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M3 11 12 3l9 8" />
+                    <path d="M5 10v10h14V10" />
+                  </svg>
+                </span>
+                <div><strong>Thuê nhà</strong><small>Ngày 05 hàng tháng</small></div>
+                <b>8.000.000</b>
+              </article>
+              <article class="schedule-card">
+                <span class="tx-icon tx-green">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7H14a3.5 3.5 0 0 1 0 7H6" />
+                  </svg>
+                </span>
+                <div><strong>Lương</strong><small>Ngày 25 hàng tháng</small></div>
+                <b class="positive">28.000.000</b>
+              </article>
+              <section class="task-list">
+                <button type="button">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 5v14M5 12h14" />
+                  </svg>
+                  Thêm hóa đơn điện, nước, internet
+                  <span>›</span>
+                </button>
+                <button type="button">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z" />
+                    <path d="M14 2v6h6" />
+                  </svg>
+                  Lưu chứng từ cho quyết toán thuế
+                  <span>›</span>
+                </button>
+              </section>
             </section>
           </section>
 
@@ -473,7 +590,7 @@
                 <p class="eyebrow">Phân tích & Báo cáo</p>
                 <h1 id="analytics-title">Báo cáo tháng 10</h1>
               </div>
-              <button class="icon-button" type="button" aria-label="Xuất báo cáo">
+              <button class="icon-button" type="button" aria-label="Xuất báo cáo" data-report-action>
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                   <path d="M7 10l5 5 5-5" />
@@ -483,42 +600,97 @@
             </header>
 
             <div class="period-tabs" role="tablist" aria-label="Khoảng thời gian">
-              <button type="button">Hôm nay</button>
-              <button type="button">Tuần</button>
-              <button class="is-selected" type="button">Tháng</button>
-              <button type="button">Quý</button>
-              <button type="button">Năm</button>
+              <button type="button" data-period="today">Hôm nay</button>
+              <button type="button" data-period="week">Tuần</button>
+              <button class="is-selected" type="button" data-period="month">Tháng</button>
+              <button type="button" data-period="quarter">Quý</button>
+              <button type="button" data-period="year">Năm</button>
             </div>
 
-            <article class="report-card">
-              <div class="section-title">
-                <h2>Báo cáo Tổng hợp</h2>
-                <span>Tháng 10</span>
+            <section class="report-hero" aria-label="Tổng quan báo cáo">
+              <div>
+                <span id="report-period-label">Tháng 10/2026</span>
+                <strong id="report-net-cashflow">+13.000.000 VND</strong>
+                <p>Dòng tiền ròng sau khi đối soát 6 nguồn tài khoản.</p>
               </div>
-              <dl class="report-metrics">
-                <div>
-                  <dt>Tổng thu nhập</dt>
-                  <dd>45.000.000</dd>
-                </div>
-                <div>
-                  <dt>Tổng chi tiêu</dt>
-                  <dd>32.000.000</dd>
-                </div>
-                <div>
-                  <dt>Tiết kiệm</dt>
-                  <dd>13.000.000</dd>
-                </div>
-              </dl>
-            </article>
+              <div class="score-ring" aria-label="Điểm sức khỏe tài chính 82 trên 100">
+                <span>82</span>
+              </div>
+            </section>
 
-            <section class="chart-panel" aria-label="Biểu đồ phân bổ chi tiêu">
-              <div class="large-donut">
-                <span>35%</span>
+            <section class="kpi-grid" aria-label="Chỉ số tài chính chính">
+              <article><span>Thu nhập</span><strong id="metric-income">45.000.000</strong><small>+12% so với kỳ trước</small></article>
+              <article><span>Chi tiêu</span><strong id="metric-expense">32.000.000</strong><small>71% tổng thu nhập</small></article>
+              <article><span>Tiết kiệm</span><strong id="metric-saving">13.000.000</strong><small>Tỷ lệ 28,9%</small></article>
+              <article><span>Ngân sách</span><strong id="metric-budget">78%</strong><small>Còn 9 ngày</small></article>
+            </section>
+
+            <section class="cashflow-panel" aria-label="Biểu đồ dòng tiền">
+              <div class="section-title">
+                <h2>Dòng tiền</h2>
+                <span>Thu - Chi - Ròng</span>
               </div>
-              <div class="chart-label label-food">Ăn uống</div>
-              <div class="chart-label label-house">Thuê nhà</div>
-              <div class="chart-label label-fun">Giải trí</div>
-              <div class="chart-label label-other">Khác</div>
+              <div class="cashflow-chart" aria-hidden="true">
+                <div class="chart-bars">
+                  <span style="--income: 78%; --expense: 42%"><i>T1</i></span>
+                  <span style="--income: 62%; --expense: 50%"><i>T2</i></span>
+                  <span style="--income: 74%; --expense: 58%"><i>T3</i></span>
+                  <span style="--income: 68%; --expense: 63%"><i>T4</i></span>
+                  <span style="--income: 86%; --expense: 55%"><i>T5</i></span>
+                  <span style="--income: 92%; --expense: 66%"><i>T6</i></span>
+                </div>
+                <svg viewBox="0 0 300 130">
+                  <path class="cashflow-fill" d="M0 100 C48 74 72 85 104 66 S166 32 204 54 248 84 300 34 L300 130 L0 130 Z" />
+                  <path class="cashflow-line" d="M0 100 C48 74 72 85 104 66 S166 32 204 54 248 84 300 34" />
+                </svg>
+              </div>
+              <div class="chart-legend">
+                <span><i class="legend-income"></i>Thu nhập</span>
+                <span><i class="legend-expense"></i>Chi tiêu</span>
+                <span><i class="legend-net"></i>Dòng tiền ròng</span>
+              </div>
+            </section>
+
+            <section class="category-report" aria-label="Phân bổ chi tiêu theo danh mục">
+              <div class="section-title">
+                <h2>Danh mục chi tiêu</h2>
+                <span>32.000.000 VND</span>
+              </div>
+              <div class="category-layout">
+                <div class="large-donut report-donut"><span>35%</span></div>
+                <div class="category-breakdown">
+                  <div><span><i class="legend-food"></i>Ăn uống</span><b>11.200.000</b><progress value="82" max="100"></progress></div>
+                  <div><span><i class="legend-rent"></i>Thuê nhà</span><b>8.000.000</b><progress value="100" max="100"></progress></div>
+                  <div><span><i class="legend-fun"></i>Giải trí</span><b>6.400.000</b><progress value="64" max="100"></progress></div>
+                  <div><span><i class="legend-other"></i>Khác</span><b>6.400.000</b><progress value="45" max="100"></progress></div>
+                </div>
+              </div>
+            </section>
+
+            <section class="budget-panel" aria-label="Theo dõi ngân sách">
+              <div class="section-title"><h2>Ngân sách & giới hạn</h2><span>4 mục</span></div>
+              <article class="budget-status is-danger"><div><strong>Ăn uống</strong><span>Đã dùng 82%, còn 900K</span></div><b>Cảnh báo</b></article>
+              <article class="budget-status"><div><strong>Di chuyển</strong><span>Đã dùng 60%, còn 800K</span></div><b>Ổn định</b></article>
+              <article class="budget-status is-good"><div><strong>Đầu tư định kỳ</strong><span>Đã hoàn thành mục tiêu tháng</span></div><b>Hoàn tất</b></article>
+            </section>
+
+            <section class="account-report" aria-label="Báo cáo theo tài khoản">
+              <div class="section-title"><h2>Theo tài khoản</h2><span>6 nguồn</span></div>
+              <div class="account-report-row">
+                <span class="bank-logo bank-sky">B</span>
+                <div><strong>Bank A - Debit</strong><small>Thu +28M, chi -18,7M</small></div>
+                <b>+9,3M</b>
+              </div>
+              <div class="account-report-row">
+                <span class="bank-logo bank-rose">M</span>
+                <div><strong>MoMo - Ví điện tử</strong><small>Chi tiêu hằng ngày</small></div>
+                <b class="negative">-3,2M</b>
+              </div>
+              <div class="account-report-row">
+                <span class="bank-logo bank-violet">C</span>
+                <div><strong>Credit Card - Visa</strong><small>Đến hạn 25/10</small></div>
+                <b class="negative">-2,0M</b>
+              </div>
             </section>
 
             <section class="insight-grid">
@@ -527,18 +699,76 @@
                 <svg viewBox="0 0 160 80" aria-hidden="true">
                   <path d="M0 58 C20 42 32 54 48 40 S78 24 96 35 126 56 160 18" />
                 </svg>
-                <p>Chi tiêu cuối tháng có thể vượt 8%.</p>
+                <p>Chi tiêu cuối tháng có thể vượt ngân sách 8%.</p>
               </article>
               <article>
-                <h2>Thu nhập & Chi tiêu</h2>
-                <div class="bar-chart" aria-hidden="true">
-                  <span style="--h: 70%"></span>
-                  <span style="--h: 48%"></span>
-                  <span style="--h: 82%"></span>
-                  <span style="--h: 58%"></span>
-                </div>
-                <p>Chênh lệch dương 13M.</p>
+                <h2>Tỷ lệ tiết kiệm</h2>
+                <div class="bar-chart" aria-hidden="true"><span style="--h: 70%"></span><span style="--h: 48%"></span><span style="--h: 82%"></span><span style="--h: 58%"></span></div>
+                <p>Đang cao hơn mục tiêu 25%.</p>
               </article>
+            </section>
+
+            <section class="recommendation-panel" aria-label="Cảnh báo và kế hoạch chi tiêu">
+              <div class="section-title"><h2>Cảnh báo & gợi ý</h2><span>AI</span></div>
+              <article class="recommendation-item is-warning">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 9v4" /><path d="M12 17h.01" /><path d="M10.3 3.9 2.4 18a2 2 0 0 0 1.7 3h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" /></svg>
+                <div><strong>Ăn uống có thể vượt ngân sách</strong><span>Còn 9 ngày, hạn mức còn 900K.</span></div>
+              </article>
+              <article class="recommendation-item">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5" /><path d="M4 19h16" /><path d="m7 15 3-3 3 2 5-7" /></svg>
+                <div><strong>Tăng đầu tư định kỳ 500K</strong><span>Dòng tiền ròng vẫn dương 13M.</span></div>
+              </article>
+              <article class="recommendation-item">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 4h-5L8 7H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3Z" /><circle cx="12" cy="13" r="3" /></svg>
+                <div><strong>3 hóa đơn cần kiểm tra VAT</strong><span>OCR dưới 90%, nên xác nhận trước khi chốt thuế.</span></div>
+              </article>
+            </section>
+
+            <section class="receipt-report" aria-label="Báo cáo hóa đơn đã quét">
+              <div class="section-title"><h2>Hóa đơn & chứng từ</h2><span>128 hóa đơn</span></div>
+              <div class="receipt-report-grid">
+                <article><span>Đã đối soát</span><strong>116</strong><small>90,6%</small></article>
+                <article><span>VAT ghi nhận</span><strong>2.480.000</strong><small>8% / 10%</small></article>
+                <article><span>Cần kiểm tra</span><strong>3</strong><small>OCR thấp</small></article>
+              </div>
+            </section>
+
+            <section class="tax-panel" aria-label="Quyết toán thuế">
+              <div class="section-title"><h2>Quyết toán thuế</h2><span>2026</span></div>
+              <div class="tax-summary">
+                <div><span>Thu nhập chịu thuế</span><strong>312.000.000</strong></div>
+                <div><span>Khấu trừ tạm tính</span><strong>21.600.000</strong></div>
+              </div>
+              <div class="tax-progress"><span>Chứng từ hợp lệ</span><progress value="78" max="100"></progress><b>78%</b></div>
+              <div class="tax-checklist">
+                <span><i></i>Lương và khấu trừ đã đồng bộ</span>
+                <span><i></i>Hóa đơn hợp lệ 116/128</span>
+                <span><i></i>Thiếu 2 chứng từ bảo hiểm</span>
+              </div>
+              <button type="button" class="wide-action">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z" /><path d="M14 2v6h6" /><path d="M9 15h6M9 18h4" /></svg>
+                Chuẩn bị hồ sơ thuế
+              </button>
+            </section>
+
+            <section class="investment-panel" aria-label="Danh mục đầu tư">
+              <div class="section-title"><h2>Danh mục đầu tư</h2><span>+6,8%</span></div>
+              <div class="portfolio-head"><div><span>Tổng giá trị</span><strong>96.400.000 VND</strong></div><b>+2.150.000</b></div>
+              <div class="asset-list">
+                <div><span>ETF VN30</span><progress value="45" max="100"></progress><b>45%</b></div>
+                <div><span>Trái phiếu</span><progress value="30" max="100"></progress><b>30%</b></div>
+                <div><span>Tiền gửi</span><progress value="25" max="100"></progress><b>25%</b></div>
+              </div>
+              <div class="investment-note"><span>Rủi ro danh mục</span><strong>Trung bình</strong><small>Đề xuất tái cân bằng ETF về 40%.</small></div>
+            </section>
+
+            <section class="export-panel" aria-label="Xuất báo cáo">
+              <div class="section-title"><h2>Xuất báo cáo</h2><span id="report-export-status">Sẵn sàng</span></div>
+              <div class="export-actions">
+                <button type="button" data-report-action><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z" /><path d="M14 2v6h6" /><path d="M9 15h6M9 18h4" /></svg>PDF</button>
+                <button type="button" data-report-action><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="M7 10l5 5 5-5" /><path d="M12 15V3" /></svg>Excel</button>
+                <button type="button" data-report-action><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4z" /><path d="M8 8h8M8 12h8M8 16h5" /></svg>Thuế</button>
+              </div>
             </section>
           </section>
 
@@ -586,6 +816,27 @@
                   Tài khoản ví điện tử
                 </span>
                 <b>›</b>
+              </button>
+              <button type="button">
+                <span>
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                  </svg>
+                  Quỹ chung gia đình
+                </span>
+                <em>3 thành viên</em>
+              </button>
+              <button type="button">
+                <span>
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M3 3v18h18" />
+                    <path d="m7 14 4-4 4 4 5-7" />
+                  </svg>
+                  Tài khoản đầu tư
+                </span>
+                <em>Đã liên kết</em>
               </button>
             </section>
 
@@ -645,6 +896,45 @@
               </button>
             </section>
 
+            <section class="settings-list" aria-label="Tự động hóa">
+              <h2>Tự động hóa</h2>
+              <button type="button">
+                <span>
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M14.5 4h-5L8 7H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3Z" />
+                    <circle cx="12" cy="13" r="3" />
+                  </svg>
+                  Nhận diện hóa đơn
+                </span>
+                <em>OCR + VAT</em>
+              </button>
+              <button type="button">
+                <span>
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 7h18s-3 0-3-7" />
+                    <path d="M13.7 21a2 2 0 0 1-3.4 0" />
+                  </svg>
+                  Cảnh báo ngân sách
+                </span>
+                <label class="switch" aria-label="Bật cảnh báo ngân sách">
+                  <input type="checkbox" checked />
+                  <span></span>
+                </label>
+              </button>
+              <button type="button">
+                <span>
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M21 12a9 9 0 0 1-15.3 6.3L3 15" />
+                    <path d="M3 21v-6h6" />
+                    <path d="M3 12a9 9 0 0 1 15.3-6.3L21 9" />
+                    <path d="M21 3v6h-6" />
+                  </svg>
+                  Đồng bộ nhiều thiết bị
+                </span>
+                <em>2 thiết bị</em>
+              </button>
+            </section>
+
             <section class="settings-list" aria-label="Hỗ trợ">
               <h2>Hỗ trợ</h2>
               <button type="button">
@@ -687,9 +977,10 @@
             </svg>
             <span>Tài khoản</span>
           </button>
-          <button type="button" class="nav-add" data-nav="add" aria-label="Thêm giao dịch">
+          <button type="button" class="nav-add" data-nav="add" aria-label="Quét hóa đơn">
             <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 5v14M5 12h14" />
+              <path d="M14.5 4h-5L8 7H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3Z" />
+              <circle cx="12" cy="13" r="3" />
             </svg>
           </button>
           <button type="button" data-nav="analytics">
@@ -711,6 +1002,6 @@
       </section>
     </main>
 
-    <script src="app.js"></script>
+    <script src="app.js?v=20260618-fix1"></script>
   </body>
 </html>
