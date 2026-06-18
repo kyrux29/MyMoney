@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">MyMoney icon mono</title>
+  <rect width="64" height="64" rx="16" fill="#16645a"/>
+  <path d="M16 23.5c0-3 2.4-5.5 5.5-5.5h21c3 0 5.5 2.4 5.5 5.5v17c0 3-2.4 5.5-5.5 5.5h-21c-3 0-5.5-2.4-5.5-5.5v-17Z" fill="#fff"/>
+  <path d="M22 39V25h4.2l5.8 7 5.8-7H42v14h-4.5v-7.4l-4.3 5h-2.4l-4.3-5V39H22Z" fill="#16645a"/>
+</svg>

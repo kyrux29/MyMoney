@@ -176,6 +176,25 @@ svg {
   letter-spacing: 0;
 }
 
+.brand-header {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 10px;
+}
+
+.brand-mark {
+  flex: 0 0 auto;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  box-shadow: 0 8px 18px rgba(22, 100, 90, 0.18);
+}
+
+.brand-header h1 {
+  overflow-wrap: anywhere;
+}
+
 .eyebrow {
   margin: 0;
   color: var(--muted);
@@ -230,6 +249,18 @@ svg {
   height: 150px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 50%;
+}
+
+.balance-brand-mark {
+  position: absolute;
+  z-index: 0;
+  right: 78px;
+  top: 18px;
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  opacity: 0.16;
+  filter: saturate(0) brightness(2.4);
 }
 
 .balance-copy {

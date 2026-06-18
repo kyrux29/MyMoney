@@ -1,0 +1,23 @@
+{
+  "name": "MyMoney",
+  "short_name": "MyMoney",
+  "description": "Demo giao diện mobile quản lý tài chính cá nhân MyMoney.",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#f7f8fa",
+  "theme_color": "#16645a",
+  "icons": [
+    {
+      "src": "assets/mymoney-mark.svg",
+      "sizes": "64x64",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/mymoney-app-icon.svg",
+      "sizes": "256x256",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

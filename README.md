@@ -12,6 +12,7 @@ Demo frontend tĩnh cho giao diện mobile quản lý tài chính cá nhân.
 - Quyết toán thuế với chứng từ hợp lệ và khấu trừ tạm tính.
 - Quỹ chung đồng bộ nhiều thiết bị.
 - Theo dõi danh mục đầu tư.
+- Bộ biểu tượng MyMoney: favicon, app icon, logo header và mark trên ví.
 
 ## Cách mở
 

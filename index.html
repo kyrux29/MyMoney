@@ -3,8 +3,12 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Tuduy Finance UI Demo</title>
-    <link rel="stylesheet" href="styles.css?v=20260618-fix1" />
+    <title>MyMoney UI Demo</title>
+    <link rel="icon" href="assets/mymoney-mark.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="assets/mymoney-app-icon.svg" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <meta name="theme-color" content="#16645a" />
+    <link rel="stylesheet" href="styles.css?v=20260618-mymoney-icons" />
   </head>
   <body>
     <main class="demo-stage" aria-label="Demo giao diện ứng dụng tài chính cá nhân">
@@ -21,9 +25,12 @@
         <div class="screens">
           <section class="screen is-active" data-screen="home" aria-labelledby="home-title">
             <header class="app-header">
-              <div>
-                <p class="eyebrow">Trang chủ</p>
-                <h1 id="home-title">Xin chào, Khánh!</h1>
+              <div class="brand-header">
+                <img class="brand-mark" src="assets/mymoney-mark.svg" alt="" />
+                <div>
+                  <p class="eyebrow">MyMoney</p>
+                  <h1 id="home-title">Xin chào, Khánh!</h1>
+                </div>
               </div>
               <button class="icon-button" type="button" aria-label="Thông báo">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -34,8 +41,9 @@
             </header>
 
             <article class="balance-panel">
+              <img class="balance-brand-mark" src="assets/mymoney-icon-mono.svg" alt="" />
               <div class="balance-copy">
-                <span>Tổng quan số dư</span>
+                <span>MyMoney Wallet</span>
                 <strong>15.350.000 VND</strong>
                 <small>Thu nhập tháng này +5,2M</small>
               </div>
@@ -1002,6 +1010,6 @@
       </section>
     </main>
 
-    <script src="app.js?v=20260618-fix1"></script>
+    <script src="app.js?v=20260618-mymoney-icons"></script>
   </body>
 </html>
