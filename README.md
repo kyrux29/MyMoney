@@ -1,28 +1,89 @@
-# Tuduy Finance UI Demo
+# MyMoney FastAPI Demo
 
-Demo frontend tĩnh cho giao diện mobile quản lý tài chính cá nhân.
+Demo web mobile cho MyMoney, gồm frontend tĩnh và backend Python FastAPI deploy trên Vercel.
 
-## Chức năng đã dựng UI
+## Cấu trúc
 
-- Tổng hợp thu/chi từ nhiều tài khoản: ngân hàng, ví, tiền mặt, thẻ tín dụng, đầu tư, quỹ chung.
-- Quét hóa đơn bằng camera/tải ảnh, nhận diện OCR, tách dòng hàng, VAT, danh mục và tài khoản thanh toán.
-- Nhập nhanh thủ công và giao dịch định kỳ.
-- Phân tích dữ liệu, cảnh báo ngân sách và gợi ý kế hoạch chi tiêu.
-- Dashboard báo cáo đầy đủ: KPI, dòng tiền, danh mục chi tiêu, ngân sách, tài khoản, hóa đơn/OCR, thuế, đầu tư và xuất PDF/Excel.
-- Quyết toán thuế với chứng từ hợp lệ và khấu trừ tạm tính.
-- Quỹ chung đồng bộ nhiều thiết bị.
-- Theo dõi danh mục đầu tư.
-- Bộ biểu tượng MyMoney: favicon, app icon, logo header và mark trên ví.
+```text
+api/
+  index.py              # entrypoint Vercel
+  main.py               # FastAPI app + routes
+  config.py             # env/path config
+  demo_data.py          # dữ liệu mock cho demo
+  services/ocr.py       # Gemini OCR + fallback mock
+  services/chat.py      # Gemini chatbot + fallback mock
+public/
+  index.html
+  app.js
+  styles.css
+  manifest.webmanifest
+  assets/
+tests/
+  test_api.py
+```
 
-## Cách mở
+## Chạy Local
 
-Mở trực tiếp file `index.html` bằng trình duyệt.
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+uvicorn api.main:app --reload --port 8000
+```
 
-Các màn hình có thể mở nhanh bằng query:
+Mở app:
 
-- `index.html?screen=home`
-- `index.html?screen=accounts`
-- `index.html?screen=add`
-- `index.html?screen=analytics`
-- `index.html?screen=settings`
-# MyMoney
+```text
+http://localhost:8000
+```
+
+API health:
+
+```text
+http://localhost:8000/api/health
+```
+
+## Test
+
+```bash
+source .venv/bin/activate
+pip install -e ".[dev]"
+pytest
+```
+
+## Deploy Vercel
+
+Import repo vào Vercel và giữ root directory là thư mục gốc. Vercel dùng:
+
+- `public/` cho frontend static.
+- `api/index.py` cho Python Serverless Function.
+- `vercel.json` để rewrite `/api/*` về FastAPI.
+- `requirements.txt` để cài runtime dependencies.
+
+Environment variables:
+
+```text
+GEMINI_API_KEY=...
+GEMINI_MODEL=gemini-2.5-flash
+ENABLE_GEMINI_OCR=true
+ENABLE_GEMINI_CHAT=true
+MAX_UPLOAD_BYTES=4000000
+```
+
+Nếu chưa có `GEMINI_API_KEY`, OCR tự fallback sang mock để demo vẫn chạy.
+
+## Luồng Demo
+
+1. Vào màn `Quét hóa đơn`.
+2. Bấm icon camera để bật camera thật.
+3. Bấm `Chụp & đọc` để gửi ảnh tới `POST /api/receipts/scan`.
+4. FastAPI gọi Gemini nếu có key, nếu không trả dữ liệu mock.
+5. Frontend hiển thị nhà cung cấp, tổng tiền, VAT, danh mục và dòng hàng.
+
+## Trợ Lý AI
+
+- Màn `Trợ lý tài chính` gọi `POST /api/chat`.
+- Backend gửi hội thoại ngắn tới Gemini qua `api/services/chat.py`.
+- Nếu chưa có `GEMINI_API_KEY`, chatbot trả lời bằng mock để demo không bị gián đoạn.
+
+Lưu ý: camera web cần HTTPS hoặc localhost. Khi deploy Vercel, domain `https://...vercel.app` đáp ứng điều kiện này.
