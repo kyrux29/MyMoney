@@ -8,7 +8,7 @@
     <link rel="apple-touch-icon" href="assets/mymoney-app-icon.svg" />
     <link rel="manifest" href="manifest.webmanifest" />
     <meta name="theme-color" content="#16645a" />
-    <link rel="stylesheet" href="styles.css?v=20260702-camera-scan" />
+    <link rel="stylesheet" href="styles.css?v=20260702-chat-widget" />
   </head>
   <body>
     <main class="demo-stage" aria-label="Demo giao diện ứng dụng tài chính cá nhân">
@@ -69,7 +69,7 @@
                 </svg>
                 <span>Quỹ chung</span>
               </button>
-              <button type="button" class="quick-action" data-screen-link="assistant">
+              <button type="button" class="quick-action" data-chat-open>
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z" />
                   <path d="M9 10h.01M12 10h.01M15 10h.01" />
@@ -460,6 +460,31 @@
                   <div><span>Rau củ & gia vị</span><b>53.000</b></div>
                   <div><span>VAT 8%</span><b>21.273</b></div>
                 </div>
+                <div class="receipt-form-grid" aria-label="Form hóa đơn đã nhận diện">
+                  <label>
+                    Nhà cung cấp
+                    <input id="receipt-merchant-input" type="text" value="Co.op Food Nguyễn Trãi" />
+                  </label>
+                  <label>
+                    Tổng tiền
+                    <input id="receipt-total-input" type="text" inputmode="numeric" value="287000" />
+                  </label>
+                  <label>
+                    VAT
+                    <input id="receipt-vat-input" type="text" inputmode="numeric" value="21273" />
+                  </label>
+                  <label>
+                    Danh mục
+                    <select id="receipt-category-input">
+                      <option>Ăn uống</option>
+                      <option>Nhà cửa</option>
+                      <option>Giải trí</option>
+                      <option>Di chuyển</option>
+                      <option>Thuế</option>
+                      <option>Khác</option>
+                    </select>
+                  </label>
+                </div>
                 <div class="field-row">
                   <label>
                     Tài khoản
@@ -471,7 +496,7 @@
                   </label>
                   <label>
                     Ghi chú
-                    <input type="text" value="Bữa trưa & thực phẩm" />
+                    <input id="receipt-note-input" type="text" value="Bữa trưa & thực phẩm" />
                   </label>
                 </div>
                 <div class="tax-check">
@@ -781,57 +806,6 @@
             </section>
           </section>
 
-          <section class="screen" data-screen="assistant" aria-labelledby="assistant-title">
-            <header class="app-header">
-              <div>
-                <p class="eyebrow">MyMoney AI</p>
-                <h1 id="assistant-title">Trợ lý tài chính</h1>
-              </div>
-              <button class="icon-button" type="button" aria-label="Xóa hội thoại" data-chat-clear>
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M3 6h18" />
-                  <path d="M8 6V4h8v2" />
-                  <path d="M6 6l1 15h10l1-15" />
-                  <path d="M10 11v6M14 11v6" />
-                </svg>
-              </button>
-            </header>
-
-            <section class="assistant-hero" aria-label="Tổng quan trợ lý">
-              <div>
-                <span>Gemini</span>
-                <strong id="chat-provider">Sẵn sàng</strong>
-              </div>
-              <b>AI</b>
-            </section>
-
-            <section class="chat-thread" id="chat-thread" aria-live="polite">
-              <article class="chat-message assistant-message">
-                <span class="chat-avatar">AI</span>
-                <div>
-                  <strong>MyMoney AI</strong>
-                  <p>Dòng tiền tháng này đang dương 13.000.000 VND. Ăn uống đã dùng 82% ngân sách.</p>
-                </div>
-              </article>
-            </section>
-
-            <section class="chat-prompts" aria-label="Câu hỏi nhanh">
-              <button type="button" data-chat-prompt="Tôi nên giảm khoản chi nào trong tuần này?">Giảm chi tiêu</button>
-              <button type="button" data-chat-prompt="Hóa đơn nào cần lưu cho báo cáo thuế?">Hồ sơ thuế</button>
-              <button type="button" data-chat-prompt="Danh mục đầu tư hiện tại có cần tái cân bằng không?">Đầu tư</button>
-            </section>
-
-            <form class="chat-compose" data-chat-form>
-              <input id="chat-input" type="text" autocomplete="off" maxlength="240" placeholder="Hỏi về dòng tiền, hóa đơn, ngân sách" />
-              <button type="submit" aria-label="Gửi câu hỏi">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="m22 2-7 20-4-9-9-4Z" />
-                  <path d="M22 2 11 13" />
-                </svg>
-              </button>
-            </form>
-          </section>
-
           <section class="screen" data-screen="settings" aria-labelledby="settings-title">
             <header class="app-header">
               <div>
@@ -958,7 +932,7 @@
 
             <section class="settings-list" aria-label="Tự động hóa">
               <h2>Tự động hóa</h2>
-              <button type="button" data-screen-link="assistant">
+              <button type="button" data-chat-open>
                 <span>
                   <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z" />
@@ -1030,6 +1004,67 @@
           </section>
         </div>
 
+        <section class="chat-widget" data-chat-widget aria-label="Trợ lý AI MyMoney">
+          <button class="chat-fab" type="button" data-chat-toggle aria-label="Mở trợ lý AI">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z" />
+              <path d="M9 10h.01M12 10h.01M15 10h.01" />
+            </svg>
+            <span>AI</span>
+          </button>
+
+          <article class="chat-panel" data-chat-panel aria-hidden="true">
+            <header class="chat-panel-head">
+              <div>
+                <span>MyMoney AI</span>
+                <strong id="chat-provider">Sẵn sàng</strong>
+              </div>
+              <div class="chat-panel-actions">
+                <button type="button" aria-label="Xóa hội thoại" data-chat-clear>
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M3 6h18" />
+                    <path d="M8 6V4h8v2" />
+                    <path d="M6 6l1 15h10l1-15" />
+                    <path d="M10 11v6M14 11v6" />
+                  </svg>
+                </button>
+                <button type="button" aria-label="Đóng trợ lý AI" data-chat-close>
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M18 6 6 18" />
+                    <path d="m6 6 12 12" />
+                  </svg>
+                </button>
+              </div>
+            </header>
+
+            <section class="chat-thread" id="chat-thread" aria-live="polite">
+              <article class="chat-message assistant-message">
+                <span class="chat-avatar">AI</span>
+                <div>
+                  <strong>MyMoney AI</strong>
+                  <p>Dòng tiền tháng này đang dương 13.000.000 VND. Ăn uống đã dùng 82% ngân sách.</p>
+                </div>
+              </article>
+            </section>
+
+            <section class="chat-prompts" aria-label="Câu hỏi nhanh">
+              <button type="button" data-chat-prompt="Tôi nên giảm khoản chi nào trong tuần này?">Giảm chi</button>
+              <button type="button" data-chat-prompt="Hóa đơn nào cần lưu cho báo cáo thuế?">Thuế</button>
+              <button type="button" data-chat-prompt="Danh mục đầu tư hiện tại có cần tái cân bằng không?">Đầu tư</button>
+            </section>
+
+            <form class="chat-compose" data-chat-form>
+              <input id="chat-input" type="text" autocomplete="off" maxlength="240" placeholder="Hỏi MyMoney AI" />
+              <button type="submit" aria-label="Gửi câu hỏi">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="m22 2-7 20-4-9-9-4Z" />
+                  <path d="M22 2 11 13" />
+                </svg>
+              </button>
+            </form>
+          </article>
+        </section>
+
         <nav class="bottom-nav" aria-label="Điều hướng chính">
           <button class="is-active" type="button" data-nav="home">
             <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1072,6 +1107,6 @@
       </section>
     </main>
 
-    <script src="app.js?v=20260702-fastapi-vercel"></script>
+    <script src="app.js?v=20260702-chat-widget"></script>
   </body>
 </html>

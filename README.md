@@ -82,8 +82,15 @@ Nếu chưa có `GEMINI_API_KEY`, OCR tự fallback sang mock để demo vẫn c
 
 ## Trợ Lý AI
 
-- Màn `Trợ lý tài chính` gọi `POST /api/chat`.
+- Trợ lý là bong bóng chat nổi ở góc dưới màn hình và hiện trên mọi tab.
+- Frontend gọi `POST /api/chat`.
 - Backend gửi hội thoại ngắn tới Gemini qua `api/services/chat.py`.
 - Nếu chưa có `GEMINI_API_KEY`, chatbot trả lời bằng mock để demo không bị gián đoạn.
+
+## OCR Hóa Đơn
+
+- Demo hiện dùng Gemini để nhận diện ảnh và trả JSON có `merchant`, `totalAmount`, `vatAmount`, `categoryName`, `items`.
+- Frontend tự copy kết quả OCR vào form hóa đơn để người dùng sửa trước khi lưu.
+- Nếu cần OCR thuần Python trên server riêng, có thể cân nhắc `pytesseract`, `EasyOCR` hoặc `PaddleOCR`. Với Vercel demo, các thư viện OCR native/deep learning thường nặng hơn và dễ làm chậm cold start, nên Gemini API phù hợp hơn.
 
 Lưu ý: camera web cần HTTPS hoặc localhost. Khi deploy Vercel, domain `https://...vercel.app` đáp ứng điều kiện này.

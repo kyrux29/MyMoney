@@ -31,6 +31,15 @@ const metricSaving = document.querySelector("#metric-saving");
 const metricBudget = document.querySelector("#metric-budget");
 const reportActions = document.querySelectorAll("[data-report-action]");
 const reportExportStatus = document.querySelector("#report-export-status");
+const receiptMerchantInput = document.querySelector("#receipt-merchant-input");
+const receiptTotalInput = document.querySelector("#receipt-total-input");
+const receiptVatInput = document.querySelector("#receipt-vat-input");
+const receiptCategoryInput = document.querySelector("#receipt-category-input");
+const receiptNoteInput = document.querySelector("#receipt-note-input");
+const chatWidget = document.querySelector("[data-chat-widget]");
+const chatToggleButton = document.querySelector("[data-chat-toggle]");
+const chatCloseButton = document.querySelector("[data-chat-close]");
+const chatOpenButtons = document.querySelectorAll("[data-chat-open]");
 const chatThread = document.querySelector("#chat-thread");
 const chatForm = document.querySelector("[data-chat-form]");
 const chatInput = document.querySelector("#chat-input");
@@ -211,12 +220,20 @@ function renderOcrItems(items = demoOcrResult.items) {
 function applyOcrResult(result = demoOcrResult) {
   const confidenceValue = Number(result.confidence || demoOcrResult.confidence);
   const confidencePercent = confidenceValue <= 1 ? Math.round(confidenceValue * 100) : Math.round(confidenceValue);
+  const merchant = result.merchant || demoOcrResult.merchant;
+  const totalAmount = Number(result.totalAmount || demoOcrResult.totalAmount);
+  const vatAmount = Number(result.vatAmount || 0);
+  const categoryName = result.categoryName || "Ăn uống";
 
-  if (ocrMerchant) ocrMerchant.textContent = result.merchant || demoOcrResult.merchant;
-  if (ocrTotal) ocrTotal.textContent = formatVnd(result.totalAmount || demoOcrResult.totalAmount);
-  if (ocrVat) ocrVat.textContent = formatVnd(result.vatAmount || 0);
-  if (ocrCategory) ocrCategory.textContent = result.categoryName || "Ăn uống";
+  if (ocrMerchant) ocrMerchant.textContent = merchant;
+  if (ocrTotal) ocrTotal.textContent = formatVnd(totalAmount);
+  if (ocrVat) ocrVat.textContent = formatVnd(vatAmount);
+  if (ocrCategory) ocrCategory.textContent = categoryName;
   if (ocrConfidence) ocrConfidence.textContent = `${confidencePercent}% tin cậy`;
+  if (receiptMerchantInput) receiptMerchantInput.value = merchant;
+  if (receiptTotalInput) receiptTotalInput.value = String(totalAmount);
+  if (receiptVatInput) receiptVatInput.value = String(vatAmount);
+  if (receiptCategoryInput) receiptCategoryInput.value = categoryName;
   renderOcrItems(result.items);
 }
 
@@ -478,6 +495,22 @@ function scrollChatToBottom() {
   chatThread.scrollTop = chatThread.scrollHeight;
 }
 
+function openChatWidget() {
+  if (!chatWidget) return;
+  chatWidget.classList.add("is-open");
+  chatWidget.querySelector("[data-chat-panel]")?.setAttribute("aria-hidden", "false");
+  window.setTimeout(() => {
+    scrollChatToBottom();
+    chatInput?.focus();
+  }, 80);
+}
+
+function closeChatWidget() {
+  if (!chatWidget) return;
+  chatWidget.classList.remove("is-open");
+  chatWidget.querySelector("[data-chat-panel]")?.setAttribute("aria-hidden", "true");
+}
+
 function appendChatMessage(role, content, options = {}) {
   if (!chatThread) return null;
 
@@ -522,7 +555,7 @@ async function sendChatMessage(rawMessage) {
   const message = rawMessage.trim();
   if (!message || !chatThread) return;
 
-  setActiveScreen("assistant");
+  openChatWidget();
   appendChatMessage("user", message);
   chatHistory.push({ role: "user", content: message });
   setChatBusy(true);
@@ -574,6 +607,24 @@ screenLinks.forEach((button) => {
   button.addEventListener("click", () => {
     setActiveScreen(button.dataset.screenLink);
   });
+});
+
+if (chatToggleButton) {
+  chatToggleButton.addEventListener("click", () => {
+    if (chatWidget?.classList.contains("is-open")) {
+      closeChatWidget();
+    } else {
+      openChatWidget();
+    }
+  });
+}
+
+if (chatCloseButton) {
+  chatCloseButton.addEventListener("click", closeChatWidget);
+}
+
+chatOpenButtons.forEach((button) => {
+  button.addEventListener("click", openChatWidget);
 });
 
 segmentedButtons.forEach((button) => {
@@ -646,7 +697,11 @@ if (saveReceiptButton) {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            note: "Giao dịch tạo từ hóa đơn quét bằng camera",
+            note: receiptNoteInput?.value || "Giao dịch tạo từ hóa đơn quét bằng camera",
+            merchant: receiptMerchantInput?.value || ocrMerchant?.textContent || "",
+            amount: Number((receiptTotalInput?.value || "").replace(/[^\d]/g, "")),
+            vatAmount: Number((receiptVatInput?.value || "").replace(/[^\d]/g, "")),
+            categoryName: receiptCategoryInput?.value || ocrCategory?.textContent || "Ăn uống",
           }),
         });
         if (!response.ok) throw new Error(`Confirm thất bại: ${response.status}`);

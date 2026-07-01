@@ -142,17 +142,24 @@ async def ocr_receipt(receipt_id: str) -> dict[str, Any]:
 @app.post("/api/receipts/{receipt_id}/confirm")
 async def confirm_receipt(receipt_id: str, payload: dict[str, Any] | None = Body(default=None)) -> dict[str, Any]:
     record = RECEIPTS.get(receipt_id, {})
+    body = payload or {}
     receipt = record.get("receipt") or receipt_payload(receipt_id, None, mock_ocr_result(), "ocr_ready")
+    if body.get("merchant"):
+        receipt["merchant"] = str(body["merchant"])[:120]
+    if body.get("amount"):
+        receipt["totalAmount"] = int(body["amount"])
+    if body.get("vatAmount") is not None:
+        receipt["vatAmount"] = int(body.get("vatAmount") or 0)
     receipt["status"] = "confirmed"
     transaction = {
         "id": str(uuid4()),
         "receiptId": receipt_id,
-        "accountId": (payload or {}).get("accountId", "acc_bank_a"),
+        "accountId": body.get("accountId", "acc_bank_a"),
         "categoryId": "cat_food",
         "kind": "expense",
         "amount": receipt["totalAmount"],
         "merchant": receipt["merchant"],
-        "note": (payload or {}).get("note", f"Hóa đơn {receipt['merchant']}"),
+        "note": body.get("note", f"Hóa đơn {receipt['merchant']}"),
         "occurredAt": receipt["purchasedAt"],
         "createdAt": now_iso(),
     }

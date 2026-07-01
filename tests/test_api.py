@@ -19,7 +19,8 @@ def test_frontend_is_served() -> None:
     assert response.status_code == 200
     assert "text/html" in response.headers["content-type"]
     assert "MyMoney UI Demo" in response.text
-    assert 'data-screen="assistant"' in response.text
+    assert 'data-chat-widget' in response.text
+    assert 'id="receipt-merchant-input"' in response.text
 
 
 def test_frontend_assets_are_served() -> None:
@@ -50,10 +51,15 @@ def test_confirm_receipt_flow() -> None:
     )
     receipt_id = scan.json()["receipt"]["id"]
 
-    response = client.post(f"/api/receipts/{receipt_id}/confirm", json={"note": "demo"})
+    response = client.post(
+        f"/api/receipts/{receipt_id}/confirm",
+        json={"note": "demo", "merchant": "Demo Mart", "amount": 123000, "vatAmount": 8000},
+    )
 
     assert response.status_code == 200
     assert response.json()["transaction"]["kind"] == "expense"
+    assert response.json()["transaction"]["merchant"] == "Demo Mart"
+    assert response.json()["transaction"]["amount"] == 123000
 
 
 def test_chat_endpoint_mock_flow() -> None:
