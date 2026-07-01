@@ -9,11 +9,11 @@ const keypad = document.querySelector(".keypad");
 const captureTabs = document.querySelectorAll("[data-capture-tab]");
 const capturePanels = document.querySelectorAll("[data-capture-panel]");
 const scanButton = document.querySelector("[data-scan-action]");
+const instantScanButtons = document.querySelectorAll("[data-instant-scan]");
 const scannerCard = document.querySelector(".scanner-card");
 const scanStatus = document.querySelector("#scan-status");
 const ocrConfidence = document.querySelector("#ocr-confidence");
 const receiptUpload = document.querySelector("#receipt-upload");
-const cameraToggleButton = document.querySelector("[data-camera-toggle]");
 const receiptCamera = document.querySelector("#receipt-camera");
 const receiptCanvas = document.querySelector("#receipt-canvas");
 const ocrMerchant = document.querySelector("#ocr-merchant");
@@ -49,6 +49,7 @@ const chatPromptButtons = document.querySelectorAll("[data-chat-prompt]");
 
 let activeAmount = "";
 let cameraStream = null;
+let autoScanTimer = null;
 let lastReceiptId = null;
 let chatHistory = [];
 const validScreens = new Set(Array.from(screens, (screen) => screen.dataset.screen));
@@ -238,14 +239,15 @@ function applyOcrResult(result = demoOcrResult) {
 }
 
 function stopReceiptCamera() {
+  window.clearTimeout(autoScanTimer);
+  autoScanTimer = null;
   if (!cameraStream) return;
 
   cameraStream.getTracks().forEach((track) => track.stop());
   cameraStream = null;
   if (receiptCamera) receiptCamera.srcObject = null;
   if (scannerCard) scannerCard.classList.remove("has-camera");
-  if (cameraToggleButton) cameraToggleButton.setAttribute("aria-label", "Mở camera");
-  if (scanStatus?.textContent === "Camera đang bật") {
+  if (scanStatus?.textContent === "Camera đang bật" || scanStatus?.textContent === "Đang căn hóa đơn") {
     scanStatus.textContent = "Sẵn sàng";
   }
 }
@@ -288,7 +290,6 @@ async function startReceiptCamera() {
     receiptCamera.srcObject = cameraStream;
     await receiptCamera.play();
     scannerCard.classList.add("has-camera");
-    if (cameraToggleButton) cameraToggleButton.setAttribute("aria-label", "Tắt camera");
     setScanState("Camera đang bật", "Sẵn sàng chụp");
     return true;
   } catch (error) {
@@ -441,20 +442,43 @@ async function uploadReceiptBlob(blob, fileName = "receipt-camera.jpg") {
   markScanComplete(ocrPayload);
 }
 
-async function scanReceiptFromCamera() {
+async function scanReceiptFromCamera(options = {}) {
   if (!cameraStream) {
     const started = await startReceiptCamera();
-    if (started) setScanState("Căn hóa đơn rồi bấm lại", "Camera sẵn sàng");
+    if (!started) {
+      if (options.auto) simulateReceiptScan("camera");
+      return;
+    }
+    if (started && options.auto) {
+      setScanState("Đang căn hóa đơn", "Tự quét");
+      window.clearTimeout(autoScanTimer);
+      autoScanTimer = window.setTimeout(() => {
+        void scanReceiptFromCamera();
+      }, 900);
+      return;
+    }
+    if (started) setScanState("Camera đang bật", "Bấm để quét");
     return;
   }
 
   try {
+    window.clearTimeout(autoScanTimer);
+    autoScanTimer = null;
+    setScanState("Đang chụp ảnh", "Đang xử lý");
     const imageBlob = await captureCameraBlob();
     await uploadReceiptBlob(imageBlob, `receipt-camera-${Date.now()}.jpg`);
+    stopReceiptCamera();
   } catch (error) {
     console.warn("[receipt scan] using demo fallback:", error);
+    stopReceiptCamera();
     simulateReceiptScan("camera");
   }
+}
+
+async function openScannerAndScan() {
+  setActiveScreen("add");
+  setCapturePanel("scan");
+  await scanReceiptFromCamera({ auto: true });
 }
 
 function updateReportPeriod(periodName) {
@@ -600,6 +624,10 @@ async function sendChatMessage(rawMessage) {
 navButtons.forEach((button) => {
   button.addEventListener("click", () => {
     setActiveScreen(button.dataset.nav);
+    if (button.dataset.nav === "add") {
+      setCapturePanel("scan");
+      void scanReceiptFromCamera({ auto: true });
+    }
   });
 });
 
@@ -655,9 +683,15 @@ captureTabs.forEach((button) => {
 
 if (scanButton) {
   scanButton.addEventListener("click", async () => {
-    await scanReceiptFromCamera();
+    await scanReceiptFromCamera({ auto: true });
   });
 }
+
+instantScanButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    void openScannerAndScan();
+  });
+});
 
 if (receiptUpload) {
   receiptUpload.addEventListener("change", async () => {
@@ -673,16 +707,6 @@ if (receiptUpload) {
         receiptUpload.value = "";
       }
     }
-  });
-}
-
-if (cameraToggleButton) {
-  cameraToggleButton.addEventListener("click", async () => {
-    if (cameraStream) {
-      stopReceiptCamera();
-      return;
-    }
-    await startReceiptCamera();
   });
 }
 

@@ -8,7 +8,7 @@
     <link rel="apple-touch-icon" href="assets/mymoney-app-icon.svg" />
     <link rel="manifest" href="manifest.webmanifest" />
     <meta name="theme-color" content="#16645a" />
-    <link rel="stylesheet" href="styles.css?v=20260702-chat-widget" />
+    <link rel="stylesheet" href="styles.css?v=20260702-ux-history" />
   </head>
   <body>
     <main class="demo-stage" aria-label="Demo giao diện ứng dụng tài chính cá nhân">
@@ -53,21 +53,31 @@
             </article>
 
             <section class="quick-row" aria-label="Hành động nhanh">
-              <button type="button" class="quick-action" data-screen-link="add">
+              <button type="button" class="quick-action" data-instant-scan>
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M14.5 4h-5L8 7H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3Z" />
                   <circle cx="12" cy="13" r="3" />
                 </svg>
                 <span>Quét HĐ</span>
               </button>
+              <button type="button" class="quick-action" data-screen-link="history">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M8 6h13" />
+                  <path d="M8 12h13" />
+                  <path d="M8 18h13" />
+                  <path d="M3 6h.01" />
+                  <path d="M3 12h.01" />
+                  <path d="M3 18h.01" />
+                </svg>
+                <span>Lịch sử</span>
+              </button>
               <button type="button" class="quick-action" data-screen-link="accounts">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                  <circle cx="9" cy="7" r="4" />
-                  <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                  <path d="M3 6h18v12H3z" />
+                  <path d="M3 10h18" />
+                  <path d="M7 15h3" />
                 </svg>
-                <span>Quỹ chung</span>
+                <span>Tài khoản</span>
               </button>
               <button type="button" class="quick-action" data-chat-open>
                 <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -75,14 +85,6 @@
                   <path d="M9 10h.01M12 10h.01M15 10h.01" />
                 </svg>
                 <span>Trợ lý</span>
-              </button>
-              <button type="button" class="quick-action" data-screen-link="analytics">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M3 3v18h18" />
-                  <path d="m7 14 4-4 4 4 5-7" />
-                  <path d="M7 18v-4M11 18v-8M15 18v-4M20 18V7" />
-                </svg>
-                <span>Đầu tư</span>
               </button>
             </section>
 
@@ -135,7 +137,7 @@
             <section class="transaction-section">
               <div class="section-title">
                 <h2>Giao dịch gần đây</h2>
-                <button type="button" data-screen-link="analytics">Xem tất cả</button>
+                <button type="button" data-screen-link="history">Xem tất cả</button>
               </div>
               <ul class="transaction-list">
                 <li>
@@ -378,13 +380,13 @@
             </section>
           </section>
 
-          <section class="screen" data-screen="add" aria-labelledby="add-title">
+          <section class="screen" data-screen="history" aria-labelledby="history-title">
             <header class="app-header">
               <div>
-                <p class="eyebrow">Quét hóa đơn</p>
-                <h1 id="add-title">Ghi nhận chi tiêu</h1>
+                <p class="eyebrow">Lịch sử</p>
+                <h1 id="history-title">Chi tiêu & giao dịch</h1>
               </div>
-              <button class="icon-button" type="button" aria-label="Mở camera" data-camera-toggle>
+              <button class="icon-button" type="button" aria-label="Quét hóa đơn mới" data-instant-scan>
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M14.5 4h-5L8 7H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3Z" />
                   <circle cx="12" cy="13" r="3" />
@@ -392,8 +394,174 @@
               </button>
             </header>
 
-            <div class="capture-tabs" role="tablist" aria-label="Cách ghi nhận giao dịch">
-              <button class="is-selected" type="button" data-capture-tab="scan">Quét HĐ</button>
+            <section class="history-summary" aria-label="Tổng quan lịch sử giao dịch">
+              <article>
+                <span>Đã chi</span>
+                <strong>2.750.000</strong>
+                <small>Tháng này</small>
+              </article>
+              <article>
+                <span>Đã thu</span>
+                <strong class="positive">15.350.000</strong>
+                <small>4 nguồn</small>
+              </article>
+              <article>
+                <span>Hóa đơn</span>
+                <strong>18</strong>
+                <small>12 đã quét</small>
+              </article>
+            </section>
+
+            <section class="history-tools" aria-label="Tìm kiếm và lọc giao dịch">
+              <label class="history-search">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="11" cy="11" r="7" />
+                  <path d="m21 21-4.3-4.3" />
+                </svg>
+                <input type="search" placeholder="Tìm giao dịch, hóa đơn..." />
+              </label>
+              <div class="history-filter-strip" aria-label="Bộ lọc nhanh">
+                <button class="is-selected" type="button">Tất cả</button>
+                <button type="button">Chi tiêu</button>
+                <button type="button">Thu nhập</button>
+                <button type="button">Hóa đơn</button>
+              </div>
+            </section>
+
+            <section class="history-group" aria-label="Giao dịch hôm nay">
+              <div class="section-title">
+                <h2>Hôm nay</h2>
+                <span>-337.000 VND</span>
+              </div>
+              <ul class="transaction-list history-list">
+                <li>
+                  <span class="tx-icon tx-blue">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M14.5 4h-5L8 7H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3Z" />
+                      <circle cx="12" cy="13" r="3" />
+                    </svg>
+                  </span>
+                  <div>
+                    <strong>Co.op Food Nguyễn Trãi</strong>
+                    <small>12:42 · Hóa đơn đã quét · Bank A</small>
+                  </div>
+                  <b>-287.000</b>
+                </li>
+                <li>
+                  <span class="tx-icon tx-orange">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M4 10h16M7 10V7a5 5 0 0 1 10 0v3M6 10l1 10h10l1-10" />
+                    </svg>
+                  </span>
+                  <div>
+                    <strong>Cà phê Highland</strong>
+                    <small>08:20 · Ăn uống · MoMo</small>
+                  </div>
+                  <b>-50.000</b>
+                </li>
+              </ul>
+            </section>
+
+            <section class="history-group" aria-label="Giao dịch hôm qua">
+              <div class="section-title">
+                <h2>Hôm qua</h2>
+                <span>+12.200.000 VND</span>
+              </div>
+              <ul class="transaction-list history-list">
+                <li>
+                  <span class="tx-icon tx-green">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7H14a3.5 3.5 0 0 1 0 7H6" />
+                    </svg>
+                  </span>
+                  <div>
+                    <strong>Lương công ty</strong>
+                    <small>17:40 · Thu nhập · Bank B</small>
+                  </div>
+                  <b class="positive">+12.500.000</b>
+                </li>
+                <li>
+                  <span class="tx-icon tx-violet">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M3 11 12 3l9 8" />
+                      <path d="M5 10v10h14V10" />
+                    </svg>
+                  </span>
+                  <div>
+                    <strong>Điện nước căn hộ</strong>
+                    <small>07:35 · Định kỳ · Quỹ chung</small>
+                  </div>
+                  <b>-300.000</b>
+                </li>
+              </ul>
+            </section>
+
+            <section class="history-group" aria-label="Giao dịch ngày 16 tháng 6">
+              <div class="section-title">
+                <h2>16/06/2026</h2>
+                <span>-425.000 VND</span>
+              </div>
+              <ul class="transaction-list history-list">
+                <li>
+                  <span class="tx-icon tx-orange">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M4 7h16l-2 12H6L4 7Z" />
+                      <path d="M9 7a3 3 0 0 1 6 0" />
+                    </svg>
+                  </span>
+                  <div>
+                    <strong>Mua sắm Shopee</strong>
+                    <small>21:15 · Mua sắm · Thẻ Visa</small>
+                  </div>
+                  <b>-150.000</b>
+                </li>
+                <li>
+                  <span class="tx-icon tx-blue">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M7 8h10M7 12h10M7 16h6" />
+                      <path d="M5 3h14v18l-3-2-3 2-3-2-3 2-2-1.3Z" />
+                    </svg>
+                  </span>
+                  <div>
+                    <strong>GrabBike</strong>
+                    <small>18:05 · Di chuyển · MoMo</small>
+                  </div>
+                  <b>-75.000</b>
+                </li>
+                <li>
+                  <span class="tx-icon tx-green">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M4 19V5" />
+                      <path d="M4 19h16" />
+                      <path d="m7 15 3-3 3 2 5-7" />
+                    </svg>
+                  </span>
+                  <div>
+                    <strong>Mua chứng chỉ quỹ</strong>
+                    <small>09:10 · Đầu tư · Bank A</small>
+                  </div>
+                  <b>-200.000</b>
+                </li>
+              </ul>
+            </section>
+          </section>
+
+          <section class="screen" data-screen="add" aria-labelledby="add-title">
+            <header class="app-header">
+              <div>
+                <p class="eyebrow">Quét hóa đơn</p>
+                <h1 id="add-title">Ghi nhận chi tiêu</h1>
+              </div>
+              <button class="icon-button" type="button" aria-label="Mở camera và quét hóa đơn" data-instant-scan>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M14.5 4h-5L8 7H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3Z" />
+                  <circle cx="12" cy="13" r="3" />
+                </svg>
+              </button>
+            </header>
+
+            <div class="capture-tabs scan-mode-strip" role="tablist" aria-label="Cách ghi nhận giao dịch">
+              <button class="scan-mode-main is-selected" type="button" data-capture-tab="scan">Quét hóa đơn</button>
               <button type="button" data-capture-tab="manual">Nhập nhanh</button>
               <button type="button" data-capture-tab="recurring">Định kỳ</button>
             </div>
@@ -424,22 +592,22 @@
                   </article>
                 </div>
                 <div class="scan-actions">
+                  <button class="scan-button primary" type="button" data-scan-action>
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2Z" />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                    Mở camera &amp; quét
+                  </button>
                   <label class="scan-button secondary">
                     <svg viewBox="0 0 24 24" aria-hidden="true">
                       <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                       <path d="M17 8 12 3 7 8" />
                       <path d="M12 3v12" />
                     </svg>
-                    Tải ảnh
+                    Ảnh có sẵn
                     <input id="receipt-upload" class="visually-hidden" type="file" accept="image/*" capture="environment" />
                   </label>
-                  <button class="scan-button primary" type="button" data-scan-action>
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2Z" />
-                      <circle cx="12" cy="13" r="4" />
-                    </svg>
-                    Chụp & đọc
-                  </button>
                 </div>
               </article>
 
@@ -1074,13 +1242,16 @@
             </svg>
             <span>Trang chủ</span>
           </button>
-          <button type="button" data-nav="accounts">
+          <button type="button" data-nav="history">
             <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M3 6h18v12H3z" />
-              <path d="M3 10h18" />
-              <path d="M7 15h3" />
+              <path d="M8 6h13" />
+              <path d="M8 12h13" />
+              <path d="M8 18h13" />
+              <path d="M3 6h.01" />
+              <path d="M3 12h.01" />
+              <path d="M3 18h.01" />
             </svg>
-            <span>Tài khoản</span>
+            <span>Lịch sử</span>
           </button>
           <button type="button" class="nav-add" data-nav="add" aria-label="Quét hóa đơn">
             <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1107,6 +1278,6 @@
       </section>
     </main>
 
-    <script src="app.js?v=20260702-chat-widget"></script>
+    <script src="app.js?v=20260702-ux-history"></script>
   </body>
 </html>

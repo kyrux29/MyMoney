@@ -374,6 +374,9 @@ svg {
 .receipt-report,
 .export-panel,
 .assistant-hero,
+.history-summary article,
+.history-tools,
+.history-group,
 .chat-thread,
 .chat-compose {
   border: 1px solid var(--line);
@@ -591,6 +594,111 @@ svg {
 
 .tx-orange {
   background: var(--accent);
+}
+
+.tx-violet {
+  background: var(--violet);
+}
+
+.history-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.history-summary article {
+  display: grid;
+  gap: 5px;
+  min-height: 84px;
+  padding: 12px 10px;
+}
+
+.history-summary span,
+.history-summary small {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.25;
+  font-weight: 720;
+}
+
+.history-summary strong {
+  color: var(--accent);
+  font-size: 16px;
+  line-height: 1.15;
+}
+
+.history-summary strong.positive {
+  color: var(--brand);
+}
+
+.history-tools {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.history-search {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 42px;
+  padding: 0 11px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f8fafc;
+  color: var(--muted);
+}
+
+.history-search svg {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+}
+
+.history-search input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 720;
+}
+
+.history-filter-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.history-filter-strip button {
+  min-width: 0;
+  min-height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 780;
+}
+
+.history-filter-strip button.is-selected {
+  border-color: rgba(22, 100, 90, 0.24);
+  background: #eaf4f1;
+  color: var(--brand-dark);
+}
+
+.history-group {
+  padding: 14px;
+  margin-top: 12px;
+}
+
+.history-list li + li {
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
 }
 
 .bank-rose {
@@ -924,6 +1032,21 @@ progress::-moz-progress-bar {
   margin-bottom: 12px;
 }
 
+.scan-mode-strip {
+  display: grid;
+  grid-template-columns: 1.35fr 0.9fr 0.9fr;
+}
+
+.scan-mode-strip button {
+  min-height: 42px;
+}
+
+.scan-mode-strip .scan-mode-main.is-selected {
+  background: var(--brand);
+  color: #fff;
+  box-shadow: 0 8px 18px rgba(22, 100, 90, 0.18);
+}
+
 .capture-panel {
   display: none;
 }
@@ -1141,7 +1264,7 @@ progress::-moz-progress-bar {
 
 .scan-actions {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1.35fr 0.9fr;
   gap: 10px;
   margin-top: 12px;
 }

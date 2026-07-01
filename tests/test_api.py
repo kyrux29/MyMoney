@@ -20,6 +20,9 @@ def test_frontend_is_served() -> None:
     assert "text/html" in response.headers["content-type"]
     assert "MyMoney UI Demo" in response.text
     assert 'data-chat-widget' in response.text
+    assert 'data-screen="history"' in response.text
+    assert "Mở camera &amp; quét" in response.text
+    assert "data-instant-scan" in response.text
     assert 'id="receipt-merchant-input"' in response.text
 
 
